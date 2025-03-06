@@ -1,0 +1,13 @@
+# Rider / IntelliJ IDEA
+.idea/
+*.iml
+
+# .NET Build Files
+bin/
+obj/
+out/
+
+# Rider workspace & VS settings
+.vs/
+*.user
+*.suo
