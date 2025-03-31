@@ -13,4 +13,12 @@ public class RestaurantsController(IRestaurantsService restaurantsService) : Con
         var restaurants = await restaurantsService.GetAllRestaurantsAsync();
         return Ok(restaurants);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetRestaurantByIdAsync([FromRoute] int id)
+    {
+        var restaurant = await restaurantsService.GetRestaurantByIdAsync(id);
+        if(restaurant is null) return NotFound();
+        return Ok(restaurant);
+    }
 }
