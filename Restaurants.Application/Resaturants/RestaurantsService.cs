@@ -1,22 +1,24 @@
 using Microsoft.Extensions.Logging;
-using Restaurants.Domain.Entities;
+using Restaurants.Application.Resaturants.Dtos;
 using Restaurants.Domain.Repositories;
 
 namespace Restaurants.Application.Resaturants;
 
 internal class RestaurantsService(IRestaurantsRepository restaurantsRepository, ILogger<RestaurantsService> logger) : IRestaurantsService
 {
-    public async Task<IEnumerable<Restaurant>> GetAllRestaurantsAsync()
+    public async Task<IEnumerable<RestaurantDto>> GetAllRestaurantsAsync()
     {
         logger.LogInformation("Get all restaurants");
         var restaurants = await restaurantsRepository.GetAllRestaurantsAsync();
-        return restaurants;
+        var restaurantDtoList = restaurants.Select(RestaurantDto.FromRestaurant);
+        return restaurantDtoList!;
     }
 
-    public async Task<Restaurant?> GetRestaurantByIdAsync(int id)
+    public async Task<RestaurantDto?> GetRestaurantByIdAsync(int id)
     {
         logger.LogInformation("Get restaurant by id");
         var restaurant = await restaurantsRepository.GetRestaurantByIdAsync(id);
-        return restaurant;
+        var restaurantDto = RestaurantDto.FromRestaurant(restaurant);
+        return restaurantDto;
     }
 }
