@@ -22,4 +22,11 @@ public class RestaurantsRepository(RestaurantsDbContext dbContext) : IRestaurant
             .FirstOrDefaultAsync(x => x.Id == id);
         return restaurant;
     }
+
+    public async Task<int> Create(Restaurant restaurant)
+    {
+        dbContext.Restaurants.Add(restaurant);
+        await dbContext.SaveChangesAsync();
+        return restaurant.Id;
+    }
 }
