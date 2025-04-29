@@ -16,10 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Host.UseSerilog((context, loggerConfiguration) =>
-    loggerConfiguration
-        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-        .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Information)
-        .WriteTo.Console(outputTemplate: "[{Timestamp: dd-MM HH:mm:ss} {Level:u3}] |{SourceContext}| {Newline}{Message:lj}{NewLine}{Exception}")
+    loggerConfiguration.ReadFrom.Configuration(context.Configuration)
 );
 
 var app = builder.Build();

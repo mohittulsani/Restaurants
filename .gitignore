@@ -11,3 +11,5 @@ out/
 .vs/
 *.user
 *.suo
+
+/Restaurants.API/Logs/
