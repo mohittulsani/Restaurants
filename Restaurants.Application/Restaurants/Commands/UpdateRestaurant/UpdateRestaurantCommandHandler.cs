@@ -7,18 +7,17 @@ using Restaurants.Domain.Repositories;
 
 namespace Restaurants.Application.Restaurants.Commands.UpdateRestaurant;
 
-public class UpdateRestaurantCommandHandler(ILogger<UpdateRestaurantCommandHandler> logger, 
-    IMapper mapper,
-    IRestaurantsRepository restaurantsRepository) : IRequestHandler<UpdateRestaurantCommand>
+public class UpdateRestaurantCommandHandler(ILogger<UpdateRestaurantCommandHandler> logger,
+    IMapper mapper, IRestaurantsRepository restaurantsRepository) : IRequestHandler<UpdateRestaurantCommand>
 {
     public async Task Handle(UpdateRestaurantCommand request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Update restaurant with Id {RestaurantId} with {@UpdatedRestaurant}", request.Id, request);
-        var restaurant = await restaurantsRepository.GetRestaurantByIdAsync(request.Id);
-        if (restaurant is null) throw new NotFoundException(nameof(Restaurant), request.Id.ToString());;
+        var restaurantId = request.Id;
+        logger.LogInformation("Updating restaurant with id: {RestaurantId} using {@Restaurant}", restaurantId, request);
+        var restaurant = await restaurantsRepository.GetByIdAsync(restaurantId);
+        if (restaurant is null) throw new NotFoundException(nameof(Restaurant), restaurantId.ToString());
         
         mapper.Map(request, restaurant);
-
-        await restaurantsRepository.UpdateRestaurantAsync();
+        await restaurantsRepository.SaveChanges();
     }
 }

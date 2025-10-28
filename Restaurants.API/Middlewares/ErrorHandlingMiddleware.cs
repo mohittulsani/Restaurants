@@ -1,6 +1,6 @@
 using Restaurants.Domain.Exceptions;
 
-namespace Restaurants.API.Middlewares;
+namespace RestaurantsAPI.Middlewares;
 
 public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : IMiddleware
 {
@@ -23,5 +23,4 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
             await context.Response.WriteAsync("Something went wrong");
         }
     }
-    
 }

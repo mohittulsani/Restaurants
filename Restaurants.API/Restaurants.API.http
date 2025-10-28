@@ -1,6 +1,38 @@
-@Restaurants.API_HostAddress = http://localhost:5201
+@RestaurantsAPI_HostAddress = http://localhost:5271
 
-GET {{Restaurants.API_HostAddress}}/weatherforecast/
+GET {{RestaurantsAPI_HostAddress}}/api/restaurants/
 Accept: application/json
 
 ###
+
+GET {{RestaurantsAPI_HostAddress}}/api/restaurants/1003
+Accept: application/json
+
+###
+POST {{RestaurantsAPI_HostAddress}}/api/restaurants
+Content-Type: application/json
+
+{
+  "Name": "Tasty Bites",
+  "Description" : "A cozy restaurant serving a variety of delicious delicacies",
+  "Category": "Indian",
+  "HasDelivery": true,
+  "ContactEmail": "info@tastybites.com",
+  "ContactNumber": "555-123-5123",
+  "City": "New York",
+  "Street": "123 Main Street",
+  "PostalCode": "10-010"
+}
+
+###
+DELETE {{RestaurantsAPI_HostAddress}}/api/restaurants/1005
+
+###
+PATCH {{RestaurantsAPI_HostAddress}}/api/restaurants/1003
+Content-Type: application/json
+
+{
+  "Name": "Tasty Bites",
+  "Description": "A cozy restaurant serving a variety of delicious delicacies",
+  "HasDelivery": false
+}

@@ -5,7 +5,7 @@ namespace Restaurants.Infrastructure.Seeders;
 
 internal class RestaurantSeeder(RestaurantsDbContext dbContext) : IRestaurantSeeder
 {
-    public async Task SeedAsync()
+    public async Task Seed()
     {
         if (await dbContext.Database.CanConnectAsync())
         {
