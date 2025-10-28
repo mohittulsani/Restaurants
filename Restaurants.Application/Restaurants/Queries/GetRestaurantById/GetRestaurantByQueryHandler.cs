@@ -13,10 +13,9 @@ public class CreateRestaurantByIdQueryHandler(ILogger<CreateRestaurantByIdQueryH
 {
     public async Task<RestaurantDto> Handle(GetRestaurantByIdQuery request, CancellationToken cancellationToken)
     {
-        var restaurantId = request.Id;
-        logger.LogInformation("Get restaurant {RestaurantId}", restaurantId);
-        var restaurant = await restaurantsRepository.GetByIdAsync(restaurantId) 
-                         ?? throw new NotFoundException(nameof(Restaurant), restaurantId.ToString());
+        logger.LogInformation("Get restaurant {RestaurantId}", request.Id);
+        var restaurant = await restaurantsRepository.GetByIdAsync(request.Id) 
+                         ?? throw new NotFoundException(nameof(Restaurant), request.Id.ToString());
         var restaurantDto = mapper.Map<RestaurantDto>(restaurant);
         return restaurantDto;
     }

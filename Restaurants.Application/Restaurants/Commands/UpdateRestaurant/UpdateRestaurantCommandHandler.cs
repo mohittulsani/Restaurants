@@ -12,10 +12,9 @@ public class UpdateRestaurantCommandHandler(ILogger<UpdateRestaurantCommandHandl
 {
     public async Task Handle(UpdateRestaurantCommand request, CancellationToken cancellationToken)
     {
-        var restaurantId = request.Id;
-        logger.LogInformation("Updating restaurant with id: {RestaurantId} using {@Restaurant}", restaurantId, request);
-        var restaurant = await restaurantsRepository.GetByIdAsync(restaurantId);
-        if (restaurant is null) throw new NotFoundException(nameof(Restaurant), restaurantId.ToString());
+        logger.LogInformation("Updating restaurant with id: {RestaurantId} using {@Restaurant}", request.Id, request);
+        var restaurant = await restaurantsRepository.GetByIdAsync(request.Id);
+        if (restaurant is null) throw new NotFoundException(nameof(Restaurant), request.Id.ToString());
         
         mapper.Map(request, restaurant);
         await restaurantsRepository.SaveChanges();
