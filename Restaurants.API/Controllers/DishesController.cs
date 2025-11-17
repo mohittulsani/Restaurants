@@ -2,6 +2,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Restaurants.Application.Dishes.Commands.CreateDish;
+using Restaurants.Application.Dishes.Commands.DeleteDishesForRestaurant;
 using Restaurants.Application.Dishes.Dtos;
 using Restaurants.Application.Dishes.Queries.GetDishByIdForRestaurant;
 using Restaurants.Application.Dishes.Queries.GetDishesForRestaurant;
@@ -21,8 +22,8 @@ public class DishesController(IMediator mediator) : ControllerBase
         var result = await validator.ValidateAsync(createDishCommand);
         if (!result.IsValid) return BadRequest(result.Errors);
         
-        await mediator.Send(createDishCommand);
-        return Created();
+        var dishId = await mediator.Send(createDishCommand);
+        return CreatedAtAction(nameof(GetDishesByIdForRestaurant), new {restaurantId, dishId}, null);
     }
 
     [HttpGet]
@@ -33,10 +34,16 @@ public class DishesController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{dishId:int}")]
-    public async Task<ActionResult<DishDto>> GetDishesByIdForRestaurant([FromRoute] int restaurantId,
-        [FromRoute] int dishId)
+    public async Task<ActionResult<DishDto>> GetDishesByIdForRestaurant([FromRoute] int restaurantId, [FromRoute] int dishId)
     {
         var dish = await mediator.Send(new GetDishByIdForRestaurantQuery(restaurantId, dishId));
         return Ok(dish);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteDishesForRestaurant([FromRoute] int restaurantId)
+    {
+        await mediator.Send(new DeleteDishesForRestaurantCommand(restaurantId));
+        return NoContent();
     }
 }
